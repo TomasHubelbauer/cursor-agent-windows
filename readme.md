@@ -1,7 +1,7 @@
-# Cursor Agent Windows
+# Hacking Cursor Agent to run on Windows
 
 Cursor folks have recently released Cursor Agent CLI:
-https://cursor.com/blog/cli
+[Cursor Agent CLI](https://cursor.com/blog/cli)
 
 I am a big fan of TUIs for AI assistants as opposed to IDE forks a-al Cursor IDE
 or even IDE integrations like the Claude Code VS Code extension.
@@ -65,7 +65,8 @@ DOWNLOAD_URL="https://downloads.cursor.com/lab/2025.08.15-dbc8d73/${OS}/${ARCH}/
 ```
 
 I constructed the macOS download URL manually:
-https://downloads.cursor.com/lab/2025.08.15-dbc8d73/darwin/arm64/agent-cli-package.tar.gz
+
+`https://downloads.cursor.com/lab/2025.08.15-dbc8d73/darwin/arm64/agent-cli-package.tar.gz`
 
 I downloaded the package and extracted its contents.
 At this point I switched over to my Windows machine and moved the extracted
@@ -76,6 +77,7 @@ As suspected, the Cursor Agent CLI is indeed a native build of a Node-based app
 with some native Node modules as dependencies.
 
 I was able to tell this from the file listing:
+
 ![The directory listing of the archive](archive-listing.png)
 
 The `index.js` script is the actual implementation of the TUI and there are two
@@ -178,15 +180,15 @@ the `else` branch to also call `require_merkle_tree_napi_darwin_arm64`:
 ```
 
 I went hunting for what this package was and come across this NPM package:
-https://www.npmjs.com/package/@btc-vision/rust-merkle-tree
+[@btc-vision/rust-merkle-tree](https://www.npmjs.com/package/@btc-vision/rust-merkle-tree)
 
 The related repository lives here:
-https://github.com/btc-vision/rust-merkle-tree
+[btc-vision/rust-merkle-tree](https://github.com/btc-vision/rust-merkle-tree)
 
 I took a look at its Releases section and what do you know - there is a Windows
 Node module build just sitting there!
 
-https://github.com/btc-vision/rust-merkle-tree/releases
+[`rust-merkle-tree` Releases](https://github.com/btc-vision/rust-merkle-tree/releases)
 
 ![Windows relase of the Rust Merkle Tree Node module](merkle-tree-windows.png)
 
@@ -214,17 +216,20 @@ SQLite there.
 I didn't want to burn too much time making my own build, so I went looking to
 see if I could find an existing one.
 A quick "sqlite3 windows node native module" Google search later, I found this
-Google Groups thread: https://groups.google.com/g/nwjs-general/c/FVhjdoGXpZM.
+Google Groups thread:
+[Node-sqlite3 build on windows](https://groups.google.com/g/nwjs-general/c/FVhjdoGXpZM)
 
-It put me on https://github.com/TryGhost/node-sqlite3 where I found a Node build
-of SQLite3 for Windows in the Releases section yet again.
+It put me on the [TryGhost/node-sqlite3](https://github.com/TryGhost/node-sqlite3)
+GitHub repository where I found a Node build of SQLite3 for Windows in the
+Releases section yet again.
 
 ![SQLite Node native build Release page](sqlite3-windows.png)
 
 I don't think this is the cleanest, if I were to do this for real, I would have
 made my own SQLite3 build or used `prebuild-install` as per the `sqlite3` NPM
 package readme here:
-https://www.npmjs.com/package/sqlite3#prebuilt-binaries
+
+[`sqlite3` NPM package](https://www.npmjs.com/package/sqlite3#prebuilt-binaries)
 
 However, this should do just fine for now, so let's find out…
 I ran `node .` again.
@@ -242,7 +247,7 @@ process.
 I went to the RipGrep GitHub Releases and in the least surprising section of the
 whole endeavour, I found a Windows build of it:
 
-https://github.com/BurntSushi/ripgrep/releases
+[`ripgrep` Releases](https://github.com/BurntSushi/ripgrep/releases)
 
 I had to go hunting for a prior release to the latest one, because that one had
 only builds affected by the bugfix in it, but the prior one had the glorious
